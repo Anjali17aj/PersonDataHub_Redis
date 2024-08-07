@@ -1,0 +1,9 @@
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\config\RedisConfig.java
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\controller\CRUDController.java
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\dto\CreatePeronRequest.java
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\dto\UpdateRequest.java
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\model\Person.java
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\RedisCrudApplication.java
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\repo\PersonRepo.java
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\repo\RedisDataRepo.java
+C:\Users\Anjali\Desktop\Redis\RedisCRUD\src\main\java\com\example\RedisCRUD\service\PersonService.java

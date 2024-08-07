@@ -1,0 +1,19 @@
+localhost:8080/create
+{
+        "name": "Charlie",
+        "email": "charlie@example.com",
+        "age": 22,
+        "address": "Chicago"
+}
+
+
+localhost:8080/get?email=alice@example.com
+
+
+localhost:8080/update?email=charlie@example.com
+{
+        "name": "Alice",
+        "email": "alice@example.com",
+        "age": 25,
+        "address": "New York"
+}

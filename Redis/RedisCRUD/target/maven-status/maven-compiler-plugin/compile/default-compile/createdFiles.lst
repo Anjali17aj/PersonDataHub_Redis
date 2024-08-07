@@ -1,0 +1,12 @@
+com\example\RedisCRUD\controller\CRUDController.class
+com\example\RedisCRUD\dto\CreatePeronRequest$CreatePeronRequestBuilder.class
+com\example\RedisCRUD\RedisCrudApplication.class
+com\example\RedisCRUD\dto\UpdateRequest$UpdateRequestBuilder.class
+com\example\RedisCRUD\model\Person$PersonBuilder.class
+com\example\RedisCRUD\dto\UpdateRequest.class
+com\example\RedisCRUD\repo\RedisDataRepo.class
+com\example\RedisCRUD\dto\CreatePeronRequest.class
+com\example\RedisCRUD\service\PersonService.class
+com\example\RedisCRUD\config\RedisConfig.class
+com\example\RedisCRUD\model\Person.class
+com\example\RedisCRUD\repo\PersonRepo.class
