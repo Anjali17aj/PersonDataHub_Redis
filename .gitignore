@@ -1,0 +1,22 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backend build
+backend/target/
+
+
+# Frontend artifacts
+frontend/dist/
+frontend/node_modules/
+
+# Legacy / IDE
+RedisData/
+.idea/

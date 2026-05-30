@@ -1,208 +1,148 @@
-# PersonDataHub_Redis
-Developed a Spring Boot application to manage Person entities, utilizing MySQL for persistent storage and Redis for enhanced in-memory data access
-This documentation provides an in-depth overview of the RedisCRUD application, detailing its structure, configuration, and the main components involved in managing Person entities using both MySQL and Redis. By following this guide, you should be able to understand the project's setup and functionality, and how the different components interact to provide CRUD operations for Person entities.
+# PersonDataHub
 
+Full-stack people directory — **Spring Boot** API with **MySQL** and **Redis**, plus a **React (JSX)** static frontend.
 
-# Introduction
-The RedisCRUD application is a Spring Boot project designed to manage Person entities with CRUD operations using both MySQL and Redis for storage. The project leverages Redis for fast in-memory data access, while also ensuring persistence in a relational database.
-
-# Project Structure
-The project is structured as follows:
-
-com.example.RedisCRUD
-config: Contains configuration classes for Redis.
-controller: Contains REST controllers for handling HTTP requests.
-dto: Contains Data Transfer Objects (DTOs) for handling data transfer between layers.
-model: Contains entity classes representing the data model.
-repo: Contains repository interfaces for data access.
-service: Contains service classes for business logic.
-RedisCrudApplication: The main application class.
-
-# Configuration
-File: RedisConfig.java
-file contains the configuration for connecting to a Redis instance using the LettuceConnectionFactory and setting up a RedisTemplate for interacting with Redis.
-
-# Models and DTOs
-File: Person.java
-The Person class is an entity representing a person in the system. It uses JPA annotations to map the class to a database table. The @CreationTimestamp and @UpdateTimestamp annotations automatically manage the creation and update timestamps.
-
-Files: CreatePeronRequest.java and UpdateRequest.java
-These DTO classes are used to transfer data when creating or updating a Person. They provide a convenient way to pass data from the client to the server and vice versa.
-
-Repositories
-File: PersonRepo.java
-This repository interface extends JpaRepository to provide CRUD operations for Person entities in the MySQL database. It also includes a custom query method to find a Person by their email.
-
-File: RedisDataRepo.java
-This repository interacts with Redis to store and retrieve Person entities. It uses RedisTemplate to perform operations on Redis. It saves a person using multiple keys for faster access.
-
-# Services
-File: PersonService.java
-The PersonService class contains the business logic for managing Person entities. It uses both PersonRepo and RedisDataRepo to perform operations. When a Person is created or updated, it is saved in both the MySQL database and Redis. For retrieval, it first checks Redis and falls back to the MySQL database if the Person is not found in Redis.
-
-# Controllers
-File: CRUDController.java
-The CRUDController class handles HTTP requests for creating, retrieving, and updating Person entities. It uses the PersonService to perform the necessary operations and returns the results as HTTP responses.
-
-# Application Entry Point
-File: RedisCrudApplication.java
-The RedisCrudApplication class is the main entry point of the Spring Boot application. The @SpringBootApplication annotation indicates a configuration class that declares one or more @Bean methods and also triggers auto-configuration and component scanning.
-
-## PersonDataHub_Redis
-
-A Spring Boot CRUD application using Redis as the primary database to manage information about people. Redis is used for its speed and efficiency in storing and retrieving key-value pairs, making the application suitable for real-time operations and caching.
+| | |
+|---|---|
+| **Version** | 1.0.0 |
+| **Backend** | `com.persondatahub.peopledirectory:people-directory-api` |
+| **Stack** | Java 17 · Spring Boot 3.3 · MySQL 8+ · Redis 6+ · React 18 · Bootstrap 5 |
 
 ---
 
-##  Project Overview
+## What it does
 
-**PersonDataHub_Redis** is a Java-based backend application that uses **Spring Boot** and **Redis** to perform basic CRUD (Create, Read, Update, Delete) operations on a `Person` entity.
-
-It demonstrates:
-- How to integrate Redis with Spring Boot using Spring Data Redis
-- Fast, in-memory data management
-- Use of layered architecture (Controller → Service → Repository)
+Manage person records (name, email, age, address) through a browser UI. The API persists data in **MySQL** and uses **Redis cache-aside** for lookups by **email** and **id**. List endpoints support **pagination**, **filtering**, and **sorting**.
 
 ---
 
-##  Functional Features
+## Architecture
 
-1.  Add a new person  
-2.  Retrieve a person by ID  
-3.  Retrieve all persons  
-4.  Update person’s name or location  
-5.  Delete a person using their ID  
+```
+┌──────────────────┐   REST / JSON    ┌─────────────────────────────────┐
+│  frontend/       │ ───────────────► │  backend/  (Spring Boot :8080)  │
+│  React + Vite    │                  │  Controller → Service → JPA     │
+│  :5173           │                  │           │              │        │
+└──────────────────┘                  │           ▼              ▼        │
+                                      │        MySQL 8+      Redis 6+    │
+                                      └─────────────────────────────────┘
+```
 
----
-
-##  Why Redis?
-
-Redis is a blazing fast, in-memory, NoSQL key-value database. This makes it ideal for:
-- Real-time applications
-- Caching layers
-- Session management
-- Rapid read/write operations
-
-This project uses Redis to demonstrate how such a database can efficiently manage structured data.
+**Cache-aside:** `GET /by-email` and `GET /{id}` check Redis first, then MySQL, then warm the cache (TTL configurable).
 
 ---
 
-##  System Architecture
+## Repository layout
 
-Client (Postman / Web / Mobile)
-|
-v
-CRUDController.java (REST APIs)
-|
-v
-PersonService.java (Business Logic)
-|
-v
-PersonRepo.java (Spring Data Redis)
-|
-v
-Redis Database (In-memory NoSQL)
-
----
-
-##  Technologies Used
-
-| Layer              | Technology         |
-|-------------------|--------------------|
-| Language           | Java 17            |
-| Framework          | Spring Boot        |
-| Database           | Redis              |
-| Data Access        | Spring Data Redis  |
-| Build Tool         | Maven              |
-| Utility Libraries  | Lombok, JUnit      |
+```
+PersonDataHub/
+├── README.md                 ← you are here (full stack)
+├── .gitignore
+├── backend/
+│   ├── README.md             ← API, config, run instructions
+│   └── src/...
+└── frontend/
+    ├── README.md             ← UI stack, run instructions
+    ├── index.html
+    ├── css/
+    ├── assets/
+    └── js/
+```
 
 ---
 
-##  Project Structure
+## Prerequisites
 
-RedisData/
-├── src/
-│ ├── main/
-│ │ ├── java/com/example/RedisCRUD/
-│ │ │ ├── config/ # Redis configuration
-│ │ │ ├── controller/ # API endpoints
-│ │ │ ├── dto/ # Data transfer objects
-│ │ │ ├── model/ # Person entity
-│ │ │ ├── repo/ # Redis repositories
-│ │ │ ├── service/ # Business logic
-│ │ │ └── RedisApplication.java# Application entry point
-│ │ └── resources/
-│ │ └── application.properties
-│ └── test/
-├── pom.xml
+| Component | Requirement |
+|-----------|-------------|
+| Backend | JDK 17+, Maven 3.8+, MySQL 8+, Redis 6+ |
+| Frontend | Node.js 18+, npm |
 
 ---
 
-##  How It Works
+## Quick start
 
-### Create Person  
-POST `/add`
-json
-{
-  "id": "1",
-  "name": "Alice",
-  "location": "Mumbai"
-}
+### 1. MySQL and Redis
 
+Start MySQL and Redis locally (default ports `3306` and `6379`).
+
+### 2. Backend
+
+```bash
+cd backend
+```
+
+Edit `src/main/resources/application.properties` — set `spring.datasource.password` for your MySQL user.
+
+```bash
+mvn clean spring-boot:run
+```
+
+API: **http://localhost:8080**
+
+Details: [backend/README.md](backend/README.md)
+
+### 3. Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173**
+
+Details: [frontend/README.md](frontend/README.md)
 
 ---
 
-Get Person by ID
-GET /get/1
+## API overview
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/api/persons` | Paginated list + filters + sort |
+| `GET` | `/api/persons/{id}` | Get by id (cache-aside) |
+| `GET` | `/api/persons/by-email?email=` | Get by email (cache-aside) |
+| `POST` | `/api/persons` | Create → `201` |
+| `PUT` | `/api/persons/{id}` | Update |
+| `DELETE` | `/api/persons/{id}` | Delete → `204` |
+
+**List query params:** `page`, `size` (max 100), `sort=field,asc`, `name`, `email`, `minAge`, `maxAge`, `address`
+
+Full reference: [backend/README.md](backend/README.md#api-reference)
 
 ---
 
-Get All Persons
-GET /all
+## Features
+
+| Area | Highlights |
+|------|------------|
+| API | CRUD, pagination, filters, consistent JSON errors |
+| Cache | Redis cache-aside; `fromCache` flag on single-record reads |
+| UI | Directory list, create/edit forms, email lookup, toasts, delete modal |
+| Data safety | Hibernate `ddl-auto=update` (schema evolves without dropping data on restart) |
 
 ---
 
-Update Person
-PUT /update
+## Configuration notes
 
-json
-
-{
-  "id": "1",
-  "name": "Alicia",
-  "location": "Delhi"
-}
+- **Do not commit** real database passwords. Use local `application.properties` only.
+- **CORS** is enabled for `http://localhost:5173` and `http://127.0.0.1:5173` by default.
+- First-time DB: JDBC URL can create database `person_data_hub` if missing.
 
 ---
 
-Delete Person
-DELETE /delete/1
+## Documentation
 
+| Document | Audience |
+|----------|----------|
+| [backend/README.md](backend/README.md) | Backend developers, API consumers |
+| [frontend/README.md](frontend/README.md) | Frontend / UI work |
 
+---
+## Summary
+PersonDataHub is a people CRUD app where MySQL permanently stores all data, and Redis temporarily caches individual person lookups by id/email to make repeated searches faster — the React frontend is just the UI that talks to the Spring Boot API.
 
-## How to Run the Project
+## License
 
-# Prerequisites
--Java 17
--Redis server installed (run redis-server)
--Maven
-
-# Steps
-Navigate into project directory:
-cd RedisData
-
-# Run Spring Boot app
-./mvnw spring-boot:run
-Visit: http://localhost:8080 to start testing with Postman or curl.
-
-# Configuration
-Edit Redis host/port if necessary in:
-src/main/resources/application.properties
-spring.redis.host=localhost
-spring.redis.port=6379
-
-# Testing
-JUnit test included:
-src/test/java/com/example/RedisCRUD/RedisCrudApplicationTests.java
-
-
+Academic / portfolio project — PersonDataHub v1.0.0.
